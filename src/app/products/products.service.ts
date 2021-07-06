@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Product } from './product.interface';
-import { map } from 'rxjs/operators';
+import { map, pluck } from 'rxjs/operators';
 import { ApiService } from '../core/api.service';
+import { ApiResponse } from '../core';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,7 @@ export class ProductsService extends ApiService {
     }
 
     const url = this.getUrl('bff', 'products');
-    return this.http.get<Product[]>(url);
+    return this.http.get<ApiResponse<Product[]>>(url).pipe(pluck('data'));
   }
 
   getProductsForCheckout(ids: string[]): Observable<Product[]> {
