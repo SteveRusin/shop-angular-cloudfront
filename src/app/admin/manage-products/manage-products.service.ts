@@ -30,12 +30,16 @@ export class ManageProductsService extends ApiService {
     );
   }
 
-  private getPreSignedUrl(fileName: string): Observable<{data: string}> {
+  private getPreSignedUrl(fileName: string): Observable<{ data: string }> {
     const url = this.getUrl('import', 'import');
 
-    return this.http.get<{data: string}>(url, {
+    return this.http.get<{ data: string }>(url, {
       params: {
         name: fileName,
+      },
+      headers: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        Authorization: `Basic ${localStorage.getItem('authorization_token')}`,
       },
     });
   }
